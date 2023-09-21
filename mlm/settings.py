@@ -160,11 +160,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    '/var/www/static/',
-]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = ['https://alprosereward.com','https://139.59.38.148']
 
 
 CRONJOBS = [
@@ -177,8 +175,20 @@ CRONJOBS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = 'core.User'
 
+STATIC_URL = "/static/"
+
+STATIC_ROOT = "/var/www/alp.com/static/"
+
+STATICFILES_DIRS=[os.path.join(BASE_DIR,"static")]
+
+
+
+
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+
+
+
 
 EMAIL_HOST = 'smtp-relay.brevo.com'
 EMAIL_HOST_USER = 'shubhamboxfy@gmail.com'
@@ -191,11 +201,8 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2'
 ]
 
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = '../../../../../../loginviagoogle'
-LOGOUT_URL = 'signout'
-LOGOUT_REDIRECT_URL = 'login'
-
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '570041960220-ovgcrko6o6d2gal23764p43cmb6kk94l.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+#LOGIN_URL = 'login'
+#LOGIN_REDIRECT_URL = '../../../../../../loginviagoogle'
+#LOGOUT_URL = 'signout'
+#_GOOGLE_OAUTH2_KEY = '570041960220-ovgcrko6o6d2gal23764p43cmb6kk94l.apps.googleusercontent.com'
+#SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'

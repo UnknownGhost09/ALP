@@ -1,647 +1,537 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    {% load static %}
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=no"
-    />
-    <!-- Vendor Styles -->
-    <link
-      rel="stylesheet"
-      media="screen"
-      href="{% static './assets/vendor/boxicons/css/boxicons.min.css' %}"
-    />
-    <link
-      rel="stylesheet"
-      media="screen"
-      href="{% static './assets/vendor/swiper/swiper-bundle.min.css' %}"
-    />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
-    <link
-      rel="stylesheet"
-      media="screen"
-      href="{% static './assets/vendor/lightgallery/css/lightgallery-bundle.min.css' %}"
-    />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Main Theme Styles + Bootstrap -->
-    <link
-      rel="stylesheet"
-      media="screen"
-      href="{% static './assets/css/theme.min.css' %}"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
-    />
 
-    <!-- Theme mode -->
-    <script>
-      let mode = window.localStorage.getItem("mode"),
-        root = document.getElementsByTagName("html")[0];
-      if (mode !== null && mode === "dark") {
-        root.classList.add("dark-mode");
-      } else {
-        root.classList.remove("dark-mode");
-      }
-    </script>
-  </head>
+<head>
+  {% load static %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=no" />
+  <!-- Vendor Styles -->
+  <link rel="stylesheet" media="screen" href="{% static './assets/vendor/boxicons/css/boxicons.min.css' %}" />
+  <link rel="stylesheet" media="screen" href="{% static './assets/vendor/swiper/swiper-bundle.min.css' %}" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+  <link rel="stylesheet" media="screen"
+    href="{% static './assets/vendor/lightgallery/css/lightgallery-bundle.min.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Main Theme Styles + Bootstrap -->
+  <link rel="stylesheet" media="screen" href="{% static './assets/css/theme.min.css' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 
-  <body>
-    <!-- Page wrapper for sticky footer -->
-    <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
-    <main class="page-wrapper">
+  <!-- Theme mode -->
+  <script>
+    let mode = window.localStorage.getItem("mode"),
+      root = document.getElementsByTagName("html")[0];
+    if (mode !== null && mode === "dark") {
+      root.classList.add("dark-mode");
+    } else {
+      root.classList.remove("dark-mode");
+    }
+  </script>
+</head>
 
-      <!-- Navbar -->
-      <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page -->
-      <header
-        class="header navbar navbar-expand-lg navbar-dark position-absolute navbar-sticky"
-      >
-        <div class="container px-3">
-          <a href=" " class="navbar-brand pe-3">
-            <img src="/media/{{appdetail.logodart}}/" width="47" alt="ALP" />
-            ALP
-          </a>
-          <div id="navbarNav" class="offcanvas offcanvas-end bg-dark">
-            <div class="offcanvas-header border-bottom border-light">
-              <h5 class="offcanvas-title text-white">Menu</h5>
-              <button
-                type="button"
-                class="btn-close btn-close-white"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="offcanvas-body">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a href="#home" class="nav-link">Home</a>
-                </li>
+<body>
+  <!-- Page wrapper for sticky footer -->
+  <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+  <main class="page-wrapper">
 
-                <li class="nav-item">
-                  <a href="#earning" class="nav-link"
-                    >Earning</a
-                  >
-                </li>
-
-                <li class="nav-item">
-                  <a href="#about" class="nav-link"
-                    >About Us</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a href="#package" class="nav-link">Packages</a>
-                </li>
-              </ul>
-            </div>
-            <div class="offcanvas-header border-top border-light">
-              {% if register %}
-              <a href="../../../loginpage" class="btn btn-primary w-100" rel="noopener">
-                Login
-              </a>
-              {% else %}
-              {% if dash == 'user' %}
-              <a href="../../../dashboard" class="btn btn-primary w-100" rel="noopener">
-                Dashboard
-              </a>
-              {% elif dash == 'admin' %}
-              <a href="../../../admin/dashboard" class="btn btn-primary w-100" rel="noopener">
-                Dashboard
-              </a>
-              {% endif %}
-              {% endif %}
-            </div>
+    <!-- Navbar -->
+    <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page -->
+    <header class="header navbar navbar-expand-lg navbar-dark position-absolute navbar-sticky">
+      <div class="container px-3">
+        <a href=" " class="navbar-brand pe-3">
+          <img src="/media/{{appdetail.logodart}}/" width="47" alt="ALP" />
+          ALP
+        </a>
+        <div id="navbarNav" class="offcanvas offcanvas-end bg-dark">
+          <div class="offcanvas-header border-bottom border-light">
+            <h5 class="offcanvas-title text-white">Menu</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+              aria-label="Close"></button>
           </div>
-          <div class="dark-mode pe-lg-1 ms-auto me-4">
-            <div
-              class="form-check form-switch mode-switch"
-              data-bs-toggle="mode"
-            >
-              <input type="checkbox" class="form-check-input" id="theme-mode" />
-              <label class="form-check-label d-none d-sm-block" for="theme-mode"
-                >Light</label
-              >
-              <label class="form-check-label d-none d-sm-block" for="theme-mode"
-                >Dark</label
-              >
-            </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a href="#home" class="nav-link">Home</a>
+              </li>
+
+              <li class="nav-item">
+                <a href="#earning" class="nav-link">Earning</a>
+              </li>
+
+              <li class="nav-item">
+                <a href="#about" class="nav-link">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a href="#package" class="nav-link">Packages</a>
+              </li>
+            </ul>
           </div>
-          <button
-            type="button"
-            class="navbar-toggler"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          {% if register %}
-          <a
-            href="../../../loginpage"
-            class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex"
-            rel="noopener"
-          >
-            Login
-          </a>
-          {% else %}
+          <div class="offcanvas-header border-top border-light">
+            {% if register %}
+            <button onclick='startLogin()'
+            class="btn btn-primary w-100" rel="noopener">
+              Login
+            </button>
+            {% else %}
+            {% if dash == 'user' %}
+            <a href="../../../dashboard" class="btn btn-primary w-100" rel="noopener">
+              Dashboard
+            </a>
+         
+            {% endif %}
+            {% endif %}
+          </div>
+        </div>
+        <div class="dark-mode pe-lg-1 ms-auto me-4">
+          <div class="form-check form-switch mode-switch" data-bs-toggle="mode">
+            <input type="checkbox" class="form-check-input" id="theme-mode" />
+            <label class="form-check-label d-none d-sm-block" for="theme-mode">Light</label>
+            <label class="form-check-label d-none d-sm-block" for="theme-mode">Dark</label>
+          </div>
+        </div>
+        <button type="button" class="navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        {% if register %}
+        <button onclick='startLogin()' class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex"
+          rel="noopener">
+          Connect Wallet
+      </button>
+        {% else %}
 
         {% if dash == 'user' %}
-        <a
-        href="../../../dashboard"
-        class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex"
-        rel="noopener"
-      >
-        Dashboard
-      </a>
+        <a href="../../../dashboard" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex"
+          rel="noopener">
+          Dashboard
+        </a>
 
-        {% elif  dash == 'admin' %}
-
-        <a
-        href="../../../admin/dashboard"
-        class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex"
-        rel="noopener"
-      >
-        Dashboard
-      </a>
+     
         {% endif %}
 
-          {% endif %}
-        </div>
-      </header>
+        {% endif %}
+      </div>
+    </header>
 
-      <!-- Hero -->
-      <section
-      id="home"
-        class="dark-mode bg-dark bg-size-cover bg-repeat-0 bg-position-center position-relative overflow-hidden py-5 mb-4"
-        style="
+    <!-- Hero -->
+    <section id="home"
+      class="dark-mode bg-dark bg-size-cover bg-repeat-0 bg-position-center position-relative overflow-hidden py-5 mb-4"
+      style="
           background-image: url({% static './assets/images/hero/hero-bg.jpg' %});
-        "
-      >
-        <div
-          class="container position-relative zindex-2 pt-5 pb-md-2 pb-lg-4 pb-xl-5"
-        >
-          <div class="row pt-3 pb-2 py-md-4">
-            <!-- Text -->
-            <div
-              class="col-xl-6 col-md-6 pt-lg-5 text-center text-md-start mb-4 mb-md-0"
-            >
-              <h1 class="display-3 pb-0 mb-0 pb-sm-3">ALP Token</h1>
-              <h1 class="display-6 pb-2 pb-sm-3">
-                Safe & Future Payment System
-              </h1>
-              <p class="fs-lg pb-2 pb-md-0 mb-4 mb-md-3">
-                Blockchain - Based Staking - Farming Plateform for Smartphones
-              </p>
-              <p class="fs-lg pb-2 pb-md-0 mb-4 mb-md-5">
-                we've spent more than ten years assisting our clients in meeting their financial needs. We provide you with the entire range of international financial services.
-              </p>
-              <div
-                class="d-flex justify-content-center justify-content-md-start pb-2 pt-lg-2 pt-xl-0"
-              >
-                <a
-                  href=" "
-                  class="btn btn-lg btn-primary shadow-primary me-3 me-sm-4"
-                  >Join us
-            </a>
-                <a href=" " class="btn btn-lg btn-outline-secondary"
-                  >Learn more</a
-                >
-              </div>
-            </div>
-
-            <!-- Parallax gfx -->
-            <div class="col-xl-6 col-md-6 d-md-flex justify-content-end">
-              <div
-                class="parallax m-auto"
-              >
-                <div class="parallax-layer zindex-2" data-depth="0.1">
-                  <img
-                    src="{% static './assets/images/hero_bg/image-20.png' %}"
-                    alt="coin"
-                    class="img-fluid"
-                    style="width: 500px;"
-                  />
-                </div>
-                <div class="parallax-layer zindex-3" data-depth="0.25">
-                  <img
-                    src="{% static './assets/images/hero_bg/image-22.png' %}"
-                    alt="coin"
-                    class="img-fluid"
-                  />
-                </div>
-                <div class="parallax-layer zindex-3" data-depth="0.25">
-                  <img
-                    src="{% static './assets/images/hero_bg/image-21.png' %}"
-                    alt="coin"
-                    class="img-fluid"
-                  />
-                </div>
-                <div class="parallax-layer" data-depth="-0.15">
-                  <img
-                    src="{% static './assets/images/hero_bg/image-23.png' %}"
-                    alt="coin"
-                    class="img-fluid"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- How it works (Steps + Video) -->
-      <section id="feature" class="container">
-        <div
-          class="text-center pb-4 pb-md-0 mb-2 my-md-5 pt-md-4 mx-auto"
-          style="max-width: 530px"
-        >
-          <h2 class="h1">How To Earn?</h2>
-          <p class="mb-0">
-            Join our community of forward-thinkers and discover endless opportunities to earn crypto on our website.
-          </p>
-        </div>
-
-        <!-- Steps -->
-        <div
-          class="steps steps-sm steps-horizontal-md steps-center pb-5 mb-md-2 mb-lg-3"
-        >
-          <div class="step">
-            <div class="step-number">
-              <div class="step-number-inner">1</div>
-            </div>
-            <div class="step-body">
-              <h3 class="h4 mb-3">Connect Wallet</h3>
-              <p class="mb-0">
-                For features and functionalities, you'll need to connect your digital wallet to our platform.
-              </p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-number">
-              <div class="step-number-inner">2</div>
-            </div>
-            <div class="step-body">
-              <h3 class="h4 mb-3">Buy Package</h3>
-              <p class="mb-0">
-                Invest in the future of finance with ALP. Buy now and be part of the cryptocurrency revolution!
-              </p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-number">
-              <div class="step-number-inner">3</div>
-            </div>
-            <div class="step-body">
-              <h3 class="h4 mb-3">Start Earning</h3>
-              <p class="mb-0">
-                Welcome to the future of wealth creation. Discover the power of ALP and start earning today!
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-            <!-- About us -->
-            <section id="about" class="container py-5 mb-md-2 mb-lg-4 mb-xl-5">
-              <div class="row align-items-center pt-2 pb-3">
-                <!-- Text -->
-                <div class="col-md-6 col-xl-6 text-center text-md-start mb-5 mb-md-0">
-                  <h6 class="">
-                    About Us
-                  </h6>
-                  <h2 class="">
-                    Powering the Future of Decentralized Finance and Innovation.
-                  </h2>
-                  <p class="pb-2 mb-4">
-                    With our own blockchain and exchange, we will enable our holders to explore the whole new world of cryptocurrency. The simplicity with which it can be accessed across various platforms will make it the first choice for investment. It will function in a variety of industries and on all major networks.
-                  </p>
-                  <hr />
-                  <div
-                    class="row mx-0 justify-content-start gap-lg-4 pt-4"
-                  >
-                    <div class="col-lg col-6 mx-md-0 p-0 d-flex align-items-center flex-column gap-3">
-                      <i class="fa-solid fa-lightbulb text-dark bg-secondary rounded-circle fs-3" style="padding: 25px 28px;"></i>
-                      <span class="small">Exchange Value</span>
-                    </div>
-                    <div class="col-lg col-6 mx-md-0 p-0 d-flex align-items-center flex-column gap-3">
-                      <i class="fa-solid fa-headphones-simple text-dark bg-secondary rounded-circle fs-3" style="padding: 25px 25px;"></i>
-                      <span class="small">User Secuirity</span>
-                    </div>
-                    <div class="col-lg col-6 mx-md-0 p-0 d-flex align-items-center flex-column gap-3">
-                      <i class="fa-solid fa-handshake text-dark bg-secondary rounded-circle fs-3" style="padding: 25px 23px;"></i>
-                      <span class="small">User Dashboard</span>
-                    </div>
-                    <div class="col-lg col-6 mx-md-0 p-0 d-flex align-items-center flex-column gap-3">
-                      <i class="fa-solid fa-stopwatch-20 text-dark bg-secondary rounded-circle fs-3" style="padding: 25px 27px;"></i>
-                      <span class="small">Asset Registries</span>
-                    </div>
-                  </div>
-                </div>
-      
-                <div class="col-md-6 col-xl offset-xl-1 d-flex">
-                  <div class="ms-auto">
-                    <img
-                      src="{% static './assets/images/hero_bg/image-26.png' %}"
-                      alt="coin"
-                      class="img-fluid"
-                      style="width: 500px;"
-                    />
-                  </div>
-                </div>
-              </div>
-            </section>
-
-          <section id="package" class="container pb-5 mb-md-2 mb-lg-4 mb-xl-5">
-            <div
-            id="package"
-            data-aos="fade-up"
-            data-aos-duration="1000"
-            class="p-lg-5 p-md-4 mt-4 p-3"
-          >
-            <div class="text-center">
-              <p class="heading fs-5 mb-2">Choose investment amount</p>
-              <h2 class="fw-semibold ps-0 mt-3 mb-4">
-                Staking Packages
-              </h2>
-            </div>
-            <div class="swiper py-4 px-lg-5 mx-lg-5 px-2">
-              <div class="swiper-wrapper">
-              {% for i in packages %}
-                <div class="swiper-slide h-100">
-                  <div class="card p-4 rounded-4 package shadow-sm border h-100">
-                    <div class="card-body d-flex flex-column p-0">
-                      <div class="">
-                        <p class="d-inline bg-light border text-uppercase py-2 px-3 small rounded-pill mb-0 fw-semibold">
-                          {{i.name}}
-                        </p>
-                      </div>
-                      <div class="mt-4 pt-3">
-                        <div
-                          class="d-flex align-items-end border-bottom border-black border-opacity-10 pb-3"
-                        >
-                        <div class="d-flex align-items-center gap-2">
-                          <i class="fa-solid fa-coins text-warning fs-4"></i>
-                          <h2 class="fw-semibold mb-0">{{i.min_amount}}</h2>
-                        </div>
-                          <p class="ms-2 mb-1">
-                            Minimum
-                          </p>
-                        </div>
-                        <div class="d-flex align-items-end pt-3">
-                          <div class="d-flex align-items-center gap-2">
-                            <i class="fa-solid fa-coins text-warning fs-4"></i>
-                          <h2 class="fw-semibold mb-0">{{i.max_amount}}</h2>
-                          </div>
-                          <p class="ms-2 mb-1">
-                            Maximum
-                          </p>
-                        </div>
-                      </div>
-                      <div class="d-grid">
-                        <button
-                          class="btn btn-lg btn-primary rounded-0 py-2 mt-4"
-                        >
-                          <a
-                            href="../../../loginpage"
-                            class="text-decoration-none text-light"
-                          >
-                            Get Started
-                          </a>
-                        </button>
-                      </div>
-                      <div
-                        class="mt-4 pt-2"
-                      >
-                        <div class="d-flex align-items-center mb-3 gap-2">
-                          <i
-                            class="fa-solid fa-circle-check rounded-circle"
-                          ></i>
-                          <p class="heading fw-semibold mb-0">
-                            Return on Investment
-                          </p>
-                        </div>
-                        <div class="d-flex align-items-center mb-3 gap-2">
-                          <i
-                            class="fa-solid fa-circle-check rounded-circle"
-                          ></i>
-                          <p class="fw-semibold mb-0">{{i.roi}}% Monthly</p>
-                        </div>
-                        <div class="d-flex align-items-center gap-2">
-                          <i
-                            class="fa-solid fa-circle-check rounded-circle"
-                          ></i>
-                          <p class="fw-semibold mb-0">{{i.plan_period}} Month Plan Period</p>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-                {% endfor %}
-              </div>
-            </div>
-          </div>
-          </section>
-
-                  <!-- CTA -->
-      <section class="container">
-        <div
-          class="dark-mode bg-dark bg-size-cover bg-position-center bg-repeat-0 position-relative overflow-hidden rounded-3 py-lg-3 py-xl-5 px-4 px-lg-5 px-xl-0"
-          style="background-image: url(assets/img/landing/saas-3/cta-bg.jpg)"
-        >
-          <div class="row mx-0 position-relative zindex-2 my-1 my-md-3">
-            <div class="col-lg-6 col-md-12 col-12 d-flex flex-column justify-content-center">
-              <div class="ms-lg-5 ms-0 pt-lg-0 pt-3">
-                <h2 class="h1 mb-0 pb-1 pb-md-3 pb-lg-0">
-                   Smart Contract Address
-                </h2>
-                <p class="mt-4 fs-5">Highlight Achievements: Recognize any recent accomplishments or milestones within the community</p>
-                
-                <div class="mt-4 pt-1">
-                  <div class="input-group mb-3">
-                    <span class="input-group-text text-wrap" id="basic-addon1">BSC Address</span>
-                    <input type="text" class="form-control py-3 bg-secondary" placeholder="Address" aria-label="Address" aria-describedby="basic-addon1" value="{{smart_contract.bscaddress}}">
-                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-link"></i></span>
-                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-copy"></i></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-12 col-12 d-flex">
-              <img src="{% static './assets/images/hero_bg/image-10.png' %}" class="img-fluid ms-lg-auto mx-md-auto me-5" width="350" alt="">
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer pt-5 pb-4 pb-lg-5">
-      <div class="container pt-lg-4">
-        <div class="row pb-5">
-          <div class="col-lg-4 col-md-6">
-            <div class="navbar-brand text-dark p-0 me-0 mb-3 mb-lg-3">
-              <a href="../../../" class="navbar-brand pe-3">
-                <img src="/media/{{appdetail.logodart}}/" width="47" alt="ALP" />
-                ALP
-              </a>
-            </div>
-            <p class="fs-sm pb-lg-3 mb-4">
-              we've spent more than ten years assisting our clients in meeting their financial needs. We provide you with the entire range of international financial services.
+        ">
+      <div class="container position-relative zindex-2 pt-5 pb-md-2 pb-lg-4 pb-xl-5">
+        <div class="row pt-3 pb-2 py-md-4">
+          <!-- Text -->
+          <div class="col-xl-6 col-md-6 pt-lg-5 text-center text-md-start mb-4 mb-md-0">
+            <h1 class="display-3 pb-0 mb-0 pb-sm-3">ALP Token</h1>
+            <h1 class="display-6 pb-2 pb-sm-3">
+              Safe & Future Payment System
+            </h1>
+            <p class="fs-lg pb-2 pb-md-0 mb-4 mb-md-3">
+              Blockchain - Based Staking - Farming Plateform for Smartphones
             </p>
-
+            <p class="fs-lg pb-2 pb-md-0 mb-4 mb-md-5">
+              we've spent more than ten years assisting our clients in meeting their financial needs. We provide you
+              with the entire range of international financial services.
+            </p>
+            <div class="d-flex justify-content-center justify-content-md-start pb-2 pt-lg-2 pt-xl-0">
+              <a href=" " class="btn btn-lg btn-primary shadow-primary me-3 me-sm-4">Join us
+              </a>
+              <a href=" " class="btn btn-lg btn-outline-secondary">Learn more</a>
+            </div>
           </div>
-          <div
-            class="col-xl-6 col-lg-7 col-md-5 offset-xl-2 offset-md-1 pt-4 pt-md-1 pt-lg-0"
-          >
-            <div id="footer-links" class="row">
-              <div class="col-lg-4">
-                <h6 class="mb-2">
-                  <a
-                    href="#useful-links"
-                    class="d-block text-dark dropdown-toggle d-lg-none py-2"
-                    data-bs-toggle="collapse"
-                    >Useful Links</a
-                  >
-                </h6>
-                <div
-                  id="useful-links"
-                  class="collapse d-lg-block"
-                  data-bs-parent="#footer-links"
-                >
-                  <ul class="nav flex-column pb-lg-1 mb-lg-3">
-                    <li class="nav-item">
-                      <a href="#home" class="nav-link d-inline-block px-0 pt-1 pb-2"
-                        >Home</a
-                      >
-                    </li>
-                    <li class="nav-item">
-                      <a href="#earning" class="nav-link d-inline-block px-0 pt-1 pb-2"
-                        >Earning</a
-                      >
-                    </li>
-                    <li class="nav-item">
-                      <a href="#about" class="nav-link d-inline-block px-0 pt-1 pb-2"
-                        >About Us</a
-                      >
-                    </li>
-                    <li class="nav-item">
-                      <a href="#package" class="nav-link d-inline-block px-0 pt-1 pb-2"
-                        >Packages</a
-                      >
-                    </li>
-                  </ul>
-                </div>
+
+          <!-- Parallax gfx -->
+          <div class="col-xl-6 col-md-6 d-md-flex justify-content-end">
+            <div class="parallax m-auto">
+              <div class="parallax-layer zindex-2" data-depth="0.1">
+                <img src="{% static './assets/images/hero_bg/image-20.png' %}" alt="coin" class="img-fluid"
+                  style="width: 500px;" />
               </div>
-              <div class="col-xl-4 col-lg-3">
-                <h6 class="mb-2">
-                  <a
-                    href="#social-links"
-                    class="d-block text-dark dropdown-toggle d-lg-none py-2"
-                    data-bs-toggle="collapse"
-                    >Socials</a
-                  >
-                </h6>
-                <div
-                  id="social-links"
-                  class="collapse d-lg-block"
-                  data-bs-parent="#footer-links"
-                >
-                  <ul class="nav flex-column mb-2 mb-lg-0">
-                    <li class="nav-item">
-                      <a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2"
-                        >Facebook</a
-                      >
-                    </li>
-                    <li class="nav-item">
-                      <a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2"
-                        >LinkedIn</a
-                      >
-                    </li>
-                    <li class="nav-item">
-                      <a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2"
-                        >Twitter</a
-                      >
-                    </li>
-                    <li class="nav-item">
-                      <a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2"
-                        >Instagram</a
-                      >
-                    </li>
-                  </ul>
-                </div>
+              <div class="parallax-layer zindex-3" data-depth="0.25">
+                <img src="{% static './assets/images/hero_bg/image-22.png' %}" alt="coin" class="img-fluid" />
               </div>
-              <div class="col-xl-4 col-lg-5 pt-2 pt-lg-0">
-                <h6 class="mb-2">Contact Us</h6>
-                <a href="mailto:email@example.com" class="fw-medium"
-                  >email@example.com</a
-                >
+              <div class="parallax-layer zindex-3" data-depth="0.25">
+                <img src="{% static './assets/images/hero_bg/image-21.png' %}" alt="coin" class="img-fluid" />
+              </div>
+              <div class="parallax-layer" data-depth="-0.15">
+                <img src="{% static './assets/images/hero_bg/image-23.png' %}" alt="coin" class="img-fluid" />
               </div>
             </div>
           </div>
         </div>
-        <p
-          class="nav d-block small text-center text-md-center pb-2 pb-lg-0 mb-0"
-        >
-          &copy; All rights reserved. Made by
+      </div>
+    </section>
+
+    <!-- How it works (Steps + Video) -->
+    <section id="feature" class="container">
+      <div class="text-center pb-4 pb-md-0 mb-2 my-md-5 pt-md-4 mx-auto" style="max-width: 530px">
+        <h2 class="h1">How To Earn?</h2>
+        <p class="mb-0">
+          Join our community of forward-thinkers and discover endless opportunities to earn crypto on our website.
         </p>
       </div>
-    </footer>
 
-    <!-- Back to top button -->
-    <a href="#top" class="btn-scroll-top" data-scroll>
-      <span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span>
-      <i class="fa-solid fa-arrow-up"></i>
-    </a>
+      <!-- Steps -->
+      <div class="steps steps-sm steps-horizontal-md steps-center pb-5 mb-md-2 mb-lg-3">
+        <div class="step">
+          <div class="step-number">
+            <div class="step-number-inner">1</div>
+          </div>
+          <div class="step-body">
+            <h3 class="h4 mb-3">Connect Wallet</h3>
+            <p class="mb-0">
+              For features and functionalities, you'll need to connect your digital wallet to our platform.
+            </p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">
+            <div class="step-number-inner">2</div>
+          </div>
+          <div class="step-body">
+            <h3 class="h4 mb-3">Buy Package</h3>
+            <p class="mb-0">
+              Invest in the future of finance with ALP. Buy now and be part of the cryptocurrency revolution!
+            </p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">
+            <div class="step-number-inner">3</div>
+          </div>
+          <div class="step-body">
+            <h3 class="h4 mb-3">Start Earning</h3>
+            <p class="mb-0">
+              Welcome to the future of wealth creation. Discover the power of ALP and start earning today!
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <!-- Vendor Scripts -->
-    <script src="{% static './assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static './assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js' %}"></script>
-    <script src="{% static './assets/vendor/parallax-js/dist/parallax.min.js' %}"></script>
-    <script src="{% static './assets/vendor/rellax/rellax.min.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <!-- Main Theme Script -->
-    <script src="{% static './assets/js/theme.min.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-    <script>
-      const swiper = new Swiper(".swiper", {
-	// Optional parameters
-	direction: "horizontal",
-	loop: true,
+    <!-- About us -->
+    <section id="about" class="container py-5 mb-md-2 mb-lg-4 mb-xl-5">
+      <div class="row align-items-center pt-2 pb-3">
+        <!-- Text -->
+        <div class="col-md-6 col-xl-6 text-center text-md-start mb-5 mb-md-0">
+          <h6 class="">
+            About Us
+          </h6>
+          <h2 class="">
+            Powering the Future of Decentralized Finance and Innovation.
+          </h2>
+          <p class="pb-2 mb-4">
+            With our own blockchain and exchange, we will enable our holders to explore the whole new world of
+            cryptocurrency. The simplicity with which it can be accessed across various platforms will make it the first
+            choice for investment. It will function in a variety of industries and on all major networks.
+          </p>
+          <hr />
+          <div class="row mx-0 justify-content-start gap-lg-4 pt-4">
+            <div class="col-lg col-6 mx-md-0 p-0 d-flex align-items-center flex-column gap-3">
+              <i class="fa-solid fa-lightbulb text-dark bg-secondary rounded-circle fs-3"
+                style="padding: 25px 28px;"></i>
+              <span class="small">Exchange Value</span>
+            </div>
+            <div class="col-lg col-6 mx-md-0 p-0 d-flex align-items-center flex-column gap-3">
+              <i class="fa-solid fa-headphones-simple text-dark bg-secondary rounded-circle fs-3"
+                style="padding: 25px 25px;"></i>
+              <span class="small">User Secuirity</span>
+            </div>
+            <div class="col-lg col-6 mx-md-0 p-0 d-flex align-items-center flex-column gap-3">
+              <i class="fa-solid fa-handshake text-dark bg-secondary rounded-circle fs-3"
+                style="padding: 25px 23px;"></i>
+              <span class="small">User Dashboard</span>
+            </div>
+            <div class="col-lg col-6 mx-md-0 p-0 d-flex align-items-center flex-column gap-3">
+              <i class="fa-solid fa-stopwatch-20 text-dark bg-secondary rounded-circle fs-3"
+                style="padding: 25px 27px;"></i>
+              <span class="small">Asset Registries</span>
+            </div>
+          </div>
+        </div>
 
-	autoplay: {
-		delay: 4000,
-	},
-	autoHeight: true,
+        <div class="col-md-6 col-xl offset-xl-1 d-flex">
+          <div class="ms-auto">
+            <img src="{% static './assets/images/hero_bg/image-26.png' %}" alt="coin" class="img-fluid"
+              style="width: 500px;" />
+          </div>
+        </div>
+      </div>
+    </section>
 
-	slidesPerView: 5,
-	spaceBetween: 10,
-	// Responsive breakpoints
-	breakpoints: {
-		// when window width is >= 320px
-		320: {
-			slidesPerView: 1,
-			spaceBetween: 20,
-		},
-		// when window width is >= 480px
-		480: {
-			slidesPerView: 1,
-			spaceBetween: 30,
-		},
-		// when window width is >= 640px
-		640: {
-			slidesPerView: 2,
-			spaceBetween: 55,
-		},
-		1024: {
-			slidesPerView: 2,
-			spaceBetween: 100,
-		},
-	},
-});
-    </script>
-  </body>
+    <section id="package" class="container pb-5 mb-md-2 mb-lg-4 mb-xl-5">
+      <div id="package" data-aos="fade-up" data-aos-duration="1000" class="p-lg-5 p-md-4 mt-4 p-3">
+        <div class="text-center">
+          <p class="heading fs-5 mb-2">Choose investment amount</p>
+          <h2 class="fw-semibold ps-0 mt-3 mb-4">
+            Staking Packages
+          </h2>
+        </div>
+        <div class="swiper py-4 px-lg-5 mx-lg-5 px-2">
+          <div class="swiper-wrapper">
+            {% for i in packages %}
+            <div class="swiper-slide h-100">
+              <div class="card p-4 rounded-4 package shadow-sm border h-100">
+                <div class="card-body d-flex flex-column p-0">
+                  <div class="">
+                    <p class="d-inline bg-light border text-uppercase py-2 px-3 small rounded-pill mb-0 fw-semibold">
+                      {{i.name}}
+                    </p>
+                  </div>
+                  <div class="mt-4 pt-3">
+                    <div class="d-flex align-items-end border-bottom border-black border-opacity-10 pb-3">
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-coins text-warning fs-4"></i>
+                        <h2 class="fw-semibold mb-0">{{i.min_amount}}</h2>
+                      </div>
+                      <p class="ms-2 mb-1">
+                        Minimum
+                      </p>
+                    </div>
+                    <div class="d-flex align-items-end pt-3">
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-coins text-warning fs-4"></i>
+                        <h2 class="fw-semibold mb-0">{{i.max_amount}}</h2>
+                      </div>
+                      <p class="ms-2 mb-1">
+                        Maximum
+                      </p>
+                    </div>
+                  </div>
+                  <div class="d-grid">
+                    <button class="btn btn-lg btn-primary rounded-0 py-2 mt-4">
+                      <a href="../../../loginpage" class="text-decoration-none text-light">
+                        Get Started
+                      </a>
+                    </button>
+                  </div>
+                  <div class="mt-4 pt-2">
+                    <div class="d-flex align-items-center mb-3 gap-2">
+                      <i class="fa-solid fa-circle-check rounded-circle"></i>
+                      <p class="heading fw-semibold mb-0">
+                        Return on Investment
+                      </p>
+                    </div>
+                    <div class="d-flex align-items-center mb-3 gap-2">
+                      <i class="fa-solid fa-circle-check rounded-circle"></i>
+                      <p class="fw-semibold mb-0">{{i.roi}}% Monthly</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                      <i class="fa-solid fa-circle-check rounded-circle"></i>
+                      <p class="fw-semibold mb-0">{{i.plan_period}} Month Plan Period</p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="">
+      <div
+        class="dark-mode bg-dark bg-size-cover bg-position-center bg-repeat-0 position-relative overflow-hidden py-lg-3 py-xl-5 px-4 px-lg-5 px-xl-0"
+        style="background-image: url(assets/img/landing/saas-3/cta-bg.jpg)">
+        <div class="row mx-0 position-relative zindex-2 my-1 my-md-3">
+          <div class="col-lg-6 col-md-12 col-12 d-flex flex-column justify-content-center">
+            <div class="ms-lg-5 ms-0 pt-lg-0 pt-3">
+              <h2 class="h1 mb-0 pb-1 pb-md-3 pb-lg-0">
+                Smart Contract Address
+              </h2>
+              <p class="mt-4 fs-5">Highlight Achievements: Recognize any recent accomplishments or milestones within the
+                community</p>
+
+              <div class="mt-4 pt-1">
+                <div class="input-group mb-3">
+                  <span class="input-group-text text-wrap" id="basic-addon1">BSC Address</span>
+                  <input type="text" class="form-control py-3 bg-secondary" placeholder="Address" aria-label="Address"
+                    aria-describedby="basic-addon1" value="{{smart_contract.bscaddress}}">
+                  <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-link"></i></span>
+                  <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-copy"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12 col-12 d-flex">
+            <img src="{% static './assets/images/hero_bg/image-10.png' %}" class="img-fluid ms-lg-auto mx-md-auto me-5"
+              width="350" alt="">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <form method='post' action="../../../loginp" id="form1">
+
+  {% csrf_token %}
+<input type="text" id="address" hidden name="addrs" required>
+<input type="text" name="ref_code" hidden value="{{ref_code}}">
+</form>
+
+
+  <!-- Footer -->
+  <footer class="footer pt-5 pb-4 pb-lg-5">
+    <div class="container pt-lg-4">
+      <div class="row pb-5">
+        <div class="col-lg-4 col-md-6">
+          <div class="navbar-brand text-dark p-0 me-0 mb-3 mb-lg-3">
+            <a href="../../../" class="navbar-brand pe-3">
+              <img src="/media/{{appdetail.logodart}}/" width="47" alt="ALP" />
+              ALP
+            </a>
+          </div>
+          <p class="fs-sm pb-lg-3 mb-4">
+            we've spent more than ten years assisting our clients in meeting their financial needs. We provide you with
+            the entire range of international financial services.
+          </p>
+
+        </div>
+        <div class="col-xl-6 col-lg-7 col-md-5 offset-xl-2 offset-md-1 pt-4 pt-md-1 pt-lg-0">
+          <div id="footer-links" class="row">
+            <div class="col-lg-4">
+              <h6 class="mb-2">
+                <a href="#useful-links" class="d-block text-dark dropdown-toggle d-lg-none py-2"
+                  data-bs-toggle="collapse">Useful Links</a>
+              </h6>
+              <div id="useful-links" class="collapse d-lg-block" data-bs-parent="#footer-links">
+                <ul class="nav flex-column pb-lg-1 mb-lg-3">
+                  <li class="nav-item">
+                    <a href="#home" class="nav-link d-inline-block px-0 pt-1 pb-2">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#earning" class="nav-link d-inline-block px-0 pt-1 pb-2">Earning</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#about" class="nav-link d-inline-block px-0 pt-1 pb-2">About Us</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#package" class="nav-link d-inline-block px-0 pt-1 pb-2">Packages</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-xl-4 col-lg-3">
+              <h6 class="mb-2">
+                <a href="#social-links" class="d-block text-dark dropdown-toggle d-lg-none py-2"
+                  data-bs-toggle="collapse">Socials</a>
+              </h6>
+              <div id="social-links" class="collapse d-lg-block" data-bs-parent="#footer-links">
+                <ul class="nav flex-column mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Facebook</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">LinkedIn</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Twitter</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Instagram</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-xl-4 col-lg-5 pt-2 pt-lg-0">
+              <h6 class="mb-2">Contact Us</h6>
+              <a href="mailto:email@example.com" class="fw-medium">email@example.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="nav d-block small text-center text-md-center pb-2 pb-lg-0 mb-0">
+        &copy; All rights reserved. Made by
+      </p>
+    </div>
+  </footer>
+
+  <!-- Back to top button -->
+  <a href="#top" class="btn-scroll-top" data-scroll>
+    <span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span>
+    <i class="fa-solid fa-arrow-up"></i>
+  </a>
+
+  <!-- Vendor Scripts -->
+  <script src="{% static './assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static './assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js' %}"></script>
+  <script src="{% static './assets/vendor/parallax-js/dist/parallax.min.js' %}"></script>
+  <script src="{% static './assets/vendor/rellax/rellax.min.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <!-- Main Theme Script -->
+  <script src="{% static './assets/js/theme.min.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.1.2/web3.min.js" integrity="sha512-SY8ZHHpr1VtCWQ3a+YWBORQfRmBCZeSWgR5YJ7gW3XyhylLfIjPjva9fPc9xrjgFxFA95+7+ch7i15ykPiVcLQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    async function startLogin() {
+
+      let web3 = new Web3(window.ethereum);
+      
+      if (typeof web3 === 'undefined' || typeof web3 == null) {
+                  alert('Please add wallet');
+                  return;
+              }
+            
+         const account = await window.ethereum.request({method: 'eth_requestAccounts'});
+      
+      try{
+      
+      
+              document.getElementById("address").value = account[0];
+              document.getElementById("form1").submit();
+          }
+      catch (e) {
+              console.log(e);
+              alert('please add metamask wallet');
+            }
+      
+      }
+      
+  </script>
+  <script>
+    const swiper = new Swiper(".swiper", {
+      // Optional parameters
+      direction: "horizontal",
+      loop: true,
+
+      autoplay: {
+        delay: 4000,
+      },
+      autoHeight: true,
+
+      slidesPerView: 5,
+      spaceBetween: 10,
+      // Responsive breakpoints
+      breakpoints: {
+        // when window width is >= 320px
+        320: {
+          slidesPerView: 1,
+          spaceBetween: 20,
+        },
+        // when window width is >= 480px
+        480: {
+          slidesPerView: 1,
+          spaceBetween: 30,
+        },
+        // when window width is >= 640px
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 55,
+        },
+        1024: {
+          slidesPerView: 2,
+          spaceBetween: 100,
+        },
+      },
+    });
+  </script>
+</body>
+
 </html>

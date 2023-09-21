@@ -23,7 +23,7 @@
       <table id='test' class="table hover table-borderless dt-responsive nowrap w-100 text-nowrap">
         <thead>
             <tr><th scope='col'>Username</th>
-              <th scope='col'>Email</th>
+              <th scope='col'>Address</th>
                 <th scope="col">Package Name</th>
                 <th scope="col">Amount recieved</th>
                 <th scope='col'>Package Amount</th>
@@ -36,7 +36,7 @@
         
           <tr>
             <td >{{i.plan_id.user_id.username}}</td>
-            <td >{{i.plan_id.user_id.email}}</td>
+            <td >{{i.plan_id.user_id.address}}</td>
             <td >{{i.plan_id.plan_id.name}}</td>
             <td >{{i.amount|floatformat:'2'}} ALP</td>
             <td >{{i.plan_id.amount}} ALP</td>

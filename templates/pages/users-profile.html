@@ -88,7 +88,7 @@
                                       </div>
                                       <div class="col-xl">
                                           <div >
-                                              <p class="mb-2">{{userdata.first_name}} {{userdata.last_name}}</p>
+                                              <p class="mb-2">{{userdata.username}}</p>
                                             
                                           </div>
                                       </div>
@@ -120,12 +120,12 @@
                                 <div class="row">
                                     <div class="col-xl-2">
                                         <div>
-                                            <h5 class="font-size-15">Email</h5>
+                                            <h5 class="font-size-15">Address</h5>
                                         </div>
                                     </div>
                                     <div class="col-xl">
                                         <div >
-                                            <p class="mb-2">{{userdata.email}}</p>
+                                            <p class="mb-2">{{userdata.address}}</p>
                                           
                                         </div>
                                     </div>
@@ -336,12 +336,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row mb-3">
-                    <label for="fullName" class="form-label fw-bold">Address</label>
-                    <div class="col-md-8 col-lg-12">
-                      <textarea name="address" rows='3' type="text" class="form-control"  value="{{useraddress.address}}" >{{useraddress.address}}</textarea>
-                    </div>
-                  </div>
+             
   
                       <div class="text-center">
                         <button type="submit" class="btn btn-primary" name='change'>Save Changes</button>

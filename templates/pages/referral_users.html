@@ -5,68 +5,62 @@
 <div class="main-content">
 
   <div class="page-content">
-      <div class="container-fluid">
-  <div class='card'>
-    <div class="card-header">
-      <h4 class="card-title">Refferal Users</h4>
-      <p class="card-title-desc">All Refferals
-      </p>
+    <div class="container-fluid">
+      <div class='card'>
+        <div class="card-header">
+          <h4 class="card-title fs-3 text-dark">Refferal Users</h4>
+          <p class="card-title-desc fs-6">All Refferals
+          </p>
+        </div>
+        <div class='card-body'>
+          <div class='table-responsive'>
+            <table id='test' class="table hover table-borderless dt-responsive  w-100 table-striped text-nowrap">
+              <thead>
+                <tr>
+
+                  <th>Name</th>
+                  <th>Total Business</th>
+                  <th>Refferal Income</th>
+                  <th>Address</th>
+                  <th>Created At</th>
+                  <th>Account Status</th>
+                  <th>View</th>
+
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for i in data %}
+                <tr>
+
+                  <td>{{i.data.username}}</td>
+                  <td>{{i.data.business|floatformat:'2'}} ALP</td>
+                  <td>{{i.direct_income|floatformat:'2'}} ALP</td>
+                  <td>{{i.data.address}}</td>
+                  <td>{{i.data.created_at}}</td>
+                  <td>{% if i.data.status == '1' %}
+                    <span class="badge text-bg-success p-2 px-3 fs-6 rounded-3">Active</span>
+                    {%else%}
+                    <span class="badge text-bg-warning p-2 px-3 fs-6 rounded-3">Inactive</span>
+                    {%endif %}
+                  </td>
+                  <td><a href='../../../admin/tree/{{i.data.id}}'><i class='fas fa-eye text-primary'></i></a></td>
+
+
+                </tr>
+
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
   </div>
-    <div class='card-body'>
-      <div class='table-responsive'>
-            <table id='test' class="table hover table-borderless dt-responsive  w-100 table-striped text-nowrap"> 
-      <thead>
-          <tr >
-            
-            <th>Name</th>
-            <th>Total Business</th>
-            <th>Refferal Income</th>
-            <th>Email</th>
-            <th>Created At</th>
-            <th>Account Status</th>
-            <th>View</th>
-            
-          </tr>
-      </thead>
-  
-      <tbody>
-        {% for i in data %}
-          <tr >
-             
-              <td>{{i.data.username}}</td>
-              <td>{{i.data.business|floatformat:'2'}} ALP</td>
-              <td>{{i.direct_income|floatformat:'2'}} ALP</td>
-              <td>{{i.data.email}}</td>
-              <td>{{i.data.created_at}}</td>
-              <td>{% if i.data.status == '1' %}
-                <span
-                class="badge text-bg-success p-2 rounded-3"
-                >Active</span
-              >
-                {%else%}
-                <span
-                class="badge text-bg-warning p-2 rounded-3"
-                >Inactive</span
-              >
-                {%endif %}
-              </td>
-          <td><a href='../../../admin/tree/{{i.data.id}}'><i class='fas fa-eye text-primary'></i></a></td>
-
-              
-          </tr>
-          
-        {% endfor %}
-
-      </tbody>
-  </table>
-</div>
- 
-</div>
-</div>
-  
-
-</div>
-</div>
 </div>
 
 

@@ -4,12 +4,13 @@ from .import views
 
 urlpatterns = [
     path('',views.index),
+    path('ref_code/<str:pk>/',views.index),
     path('dashboard',views.home,name='dashboard'),
     path('forgot',views.forgot),
     path('otp',views.otp),
     path('change',views.change),
-    path('register',views.register),
-    path('register/<str:pk>/',views.register),
+    #path('register',views.register),
+    #path('register/<str:pk>/',views.register),
     path('signout',views.signout,name='signout'),
     path('myprofile',views.userprofile),
     path('myprofile1',views.myprofile),
@@ -20,7 +21,7 @@ urlpatterns = [
     path('income',views.income),
     path('verify/<str:pk>/',views.verifyregister,name='register'),
     path('users',views.userdata),
-    path('loginpage',views.loginpage),
+    #path('loginpage',views.loginpage),
     path('package',views.memberships),
     path('support',views.support),
     path('transaction',views.transactions),
@@ -31,8 +32,8 @@ urlpatterns = [
     path('userpackage',views.userpackage),
     path('social-auth/',include('social_django.urls',namespace='social')),
     path('resend_otp/<str:pk>/',views.resend_otp),
-    path('loginviagoogle',views.loginviagoogle),
-    path('resetpass',views.resetpass),
+    #path('loginviagoogle',views.loginviagoogle),
+    #path('resetpass',views.resetpass),
     path('buyplan',views.buyplan),
     # path('transfer',views.ptransfer),
     # path('transferhistory',views.transferhistory),
@@ -52,8 +53,8 @@ urlpatterns = [
     # path('tophistory',views.topuphistory),
     path('tree',views.tree),
     path('downlineteam',views.downlineteam),
-    path('reset_password/<str:pk>/',views.reset_password),
-    path('newpassword',views.newpassword),
+    #path('reset_password/<str:pk>/',views.reset_password),
+    #path('newpassword',views.newpassword),
     path('getBalance/<str:pk>/',views.getBalance),
     # path('claim_reward/<str:pk>/',views.claim_reward),
     # path('rewards',views.rewards),
@@ -61,7 +62,9 @@ urlpatterns = [
     # path('rolyality_reward',views.RoyalityReward.as_view()),
     # path('royality_income',views.royality_income),
     path('get_price/<str:pk>',views.get_price),
-    path('principal_income',views.principal_history)
+    path('principal_income',views.principal_history),
+    path('loginp',views.loginpage1)
+
 
 
 ]

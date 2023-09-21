@@ -3,36 +3,26 @@
 <div class="main-content">
   <div class="page-content">
     <div class="container-fluid">
-      <div class="card-header mt-4">
-        <h4 class="card-title">Deposit Funds</h4>
+      <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+        <h4 class="mb-sm-0 ">Deposite Funds</h4>
+
+
       </div>
-      <div
-        class="card bg-black bg-opacity-25 border border-white shadow-lg border-opacity-25 mt-4 rounded-4"
-      >
-        <div class="card-body">
+      <div class="  bg-opacity-25 border-0 ">
+        <div class="">
           <div class="row">
-            <div class="col-xl-4">
-              <div
-                class="card bg-dark bg-opacity-25 border border-white shadow-lg border-opacity-25 rounded-4"
-              >
-                <div class="card-header align-items-center d-flex rounded-4">
+            <div class="col-12 col-md-6 col-lg-5">
+              <div class="card bg-dark border-0 ">
+                <div class="card-header bg-dark align-items-center d-flex ">
                   <h4 class="card-title mb-0 flex-grow-1">Deposit</h4>
                   <div class="flex-shrink-0">
-                    <ul
-                      class="nav nav-tabs-custom card-header-tabs"
-                      role="tablist"
-                    >
+                    <ul class="nav nav-tabs-custom card-header-tabs" role="tablist">
                       <li class="nav-item">
-                        <a
-                          class="nav-link active"
-                          data-bs-toggle="tab"
-                          href="#buy-tab"
-                          role="tab"
-                        >
+                        <a class="nav-link activebg-dark" data-bs-toggle="tab" href="#buy-tab" role="tab">
                           <p class="text-white mb-0 text-opacity-75">
                             Deposit
-                          </p></a
-                        >
+                          </p>
+                        </a>
                       </li>
                     </ul>
                   </div>
@@ -44,14 +34,10 @@
                     <div class="tab-pane active" id="buy-tab" role="tabpanel">
                       <div class="float-end ms-2">
                         <h5 class="font-size-14">
-                          <i
-                            class="bx bx-wallet text-primary font-size-16 align-middle me-1"
-                          ></i>
-                          <a
-                            href="#!"
-                            class="text-reset text-decoration-underline"
-                            >{{walletdata.avaliable_balance|floatformat:"2"}} ALP</a
-                          >
+                          <i class="bx bx-wallet text-primary font-size-16 align-middle me-1"></i>
+                          <a href="#!"
+                            class="text-reset text-decoration-underline">{{walletdata.avaliable_balance|floatformat:"2"}}
+                            ALP</a>
                         </h5>
                       </div>
                       <h5 class="font-size-14 mb-4">Deposit</h5>
@@ -62,7 +48,8 @@
 
                           <div class="form-group mb-3">
                             <label>Payment method :</label>
-                            <select class="form-select bg-black bg-opacity-25 border border-white shadow-lg border-opacity-25 rounded-4">
+                            <select
+                              class="form-select bg-black bg-opacity-25 border border-white shadow-lg border-opacity-25 rounded-4">
                               <option>CRYPTO</option>
                             </select>
                           </div>
@@ -70,29 +57,21 @@
                           <div>
                             <label>Add Amount :</label>
                             <div class="input-group mb-3">
-                              <label class="input-group-text bg-light bg-opacity-10 border border-white shadow-lg border-opacity-25">Amount</label>
+                              <label
+                                class="input-group-text bg-light bg-opacity-10 border border-white shadow-lg border-opacity-25">Amount</label>
                               <select
                                 class="form-select bg-light bg-opacity-10 border border-white shadow-lg border-opacity-25"
-                                name="currency"
-                                style="max-width: 90px"
-                              >
+                                name="currency" style="max-width: 90px">
                                 <option value="USDT" selected>USDT</option>
                               </select>
-                              <input
-                                type="number"
+                              <input type="number"
                                 class="form-control bg-light bg-opacity-10 border border-white shadow-lg border-opacity-25"
-                                name="amount"
-                                placeholder="100"
-                              />
+                                name="amount" placeholder="100" />
                             </div>
                           </div>
 
                           <div class="text-center">
-                            <button
-                              type="submit"
-                              class="btn btn-outline-success w-md"
-                              name="addfund"
-                            >
+                            <button type="submit" class="btn btn-success w-100" name="addfund">
                               Deposit
                             </button>
                           </div>
@@ -109,21 +88,16 @@
               <!-- end col -->
             </div>
 
-            <div class="col-xl-8">
-              <div
-                class="card bg-dark bg-opacity-25 border border-white shadow-lg border-opacity-25 rounded-4"
-              >
-                <div class="card-header align-items-center d-flex rounded-4">
+            <div class="col-12">
+              <div class="card bg-dark border-0 ">
+                <div class="card-header bg-dark align-items-center d-flex ">
                   <h4 class="card-title mb-0 flex-grow-1">
                     All Deposit History
                   </h4>
                 </div>
-                <div class="card-body">
+                <div class="card-bodybg-dark rounded-3">
                   <div class="table-responsive">
-                    <table
-                      id="incometable"
-                      class="table hover table-borderless dt-responsive nowrap w-100 text-nowrap"
-                    >
+                    <table id="incometable" class="table hover table-borderless dt-responsive nowrap w-100 text-nowrap">
                       <thead>
                         <tr>
                           <th scope="col">
@@ -161,21 +135,15 @@
                           <td>{{i.address}}</td>
                           {% if i.status == '0' %}
                           <td>
-                            <span class="badge text-bg-warning p-2 rounded-pill"
-                              >Pending</span
-                            >
+                            <span class="badge text-bg-warning p-2 rounded-pill">Pending</span>
                           </td>
                           {% elif i.status == '1' %}
                           <td>
-                            <span class="badge text-bg-success p-2 rounded-pill"
-                              >Completed</span
-                            >
+                            <span class="badge text-bg-success p-2 rounded-pill">Completed</span>
                           </td>
                           {% else %}
                           <td>
-                            <span class="badge text-bg-danger p-2 rounded-pill"
-                              >Canceled</span
-                            >
+                            <span class="badge text-bg-danger p-2 rounded-pill">Canceled</span>
                           </td>
                           {% endif %}
                           <td>{{i.date|slice:"0:19"}}</td>

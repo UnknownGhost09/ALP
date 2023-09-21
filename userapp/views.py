@@ -74,15 +74,12 @@ def home(request,pk=None):
                 except:
                     alpdata=None
                  
-                    #tabs        
+      
                 total_withdrawls=sum([float(i.amount) for i in userWithdrawls.objects.filter(user_id=user.id,type='0',status='1')])
 
-
                 smart_contract=WithdrawSettingModel.objects.get(id=1)
-
                 farming_roi=FarmingRoiLogs.objects.filter(user_id=user.id)
                 total_farming_roi=sum([float(i.roi_recieved) for i in  UserMembership.objects.filter(user_id=user.id,status='1')])
-
             
                 userwallet=wallet.objects.get(user_id=user.id) 
                 user_refferals=User.objects.filter(referal_by=user.referal_code)
@@ -108,8 +105,9 @@ def home(request,pk=None):
                         if len(child_id)==0:
                             break
                 team=len(team)
+                print(team)
                 total_team_business=user.business
-            
+
                 
                 child_id=[i.referal_code for i in user_refferals if i.status=='1']
                 if len(child_id)>0:
@@ -140,13 +138,12 @@ def home(request,pk=None):
 
             
                 total_income=float(total_farming_roi)+float(refferal_income)
-                
+
                 current_package_amount=sum([float(i.amount) for i in  UserMembership.objects.filter(user_id=user.id)])
                    
                 o=UserMembership.objects.filter(user_id=user.id,status='1')
                 roi_left=sum([((float(i.amount)/100)*float(i.max_roi))-float(i.roi_recieved) for i in o])
                 overall_=sum([(float(i.amount)/100)*float(i.max_roi) for i in o])
-                
      
                 refs=len(User.objects.filter(referal_by=user.referal_code))
 
@@ -156,14 +153,13 @@ def home(request,pk=None):
                     popup=1
                 else:
                     popup=None
-               
-                usr_refs=UserReferral.objects.filrer(parent_id=user.id)
+                usr_refs=UserReferral.objects.filter(parent_id=user.id)
                 return render(request,'userpages/home.html',{'total_income':total_income,
                                                              'userwallet':userwallet,
                                                              'user_refferals':user_refferals,
                                                              'total_user_refferals':total_user_refferals,
                                                              'total_withdrawls':total_withdrawls,
-                                                             'u':user.email,
+                                                             'u':user.address,
                                                              'ref_link':ref_link,
                                                              'newsdata':newsdata,
                                                             'size':len(newsdata),
@@ -229,7 +225,7 @@ def register(request,pk=None):
         password=request.POST.get('password')
         confirmpassword=request.POST.get('confirmpassword')
         referral = request.POST.get('referral').strip()
-        print(email,first_name,last_name,password,confirmpassword,referral)
+        
         
         if password == confirmpassword:
             password=make_password(password)
@@ -259,7 +255,7 @@ def register(request,pk=None):
                 ob=User.objects.get(referal_code=referral)
                 print(ob)
                 if ob.verified_at=='True' and ob.status=='1':
-                    User.objects.create(username='BS'+str(int(time.time()))+'T',email=email,first_name=first_name,last_name=last_name,password=password,referal_by=referral,remember_token=token)
+                    User.objects.create(username='AL'+str(int(time.time()))+'P',email=email,first_name=first_name,last_name=last_name,password=password,referal_by=referral,remember_token=token)
             except:
                 return render(request,'userpages/register_2.html',{'message1':'Refferal Code Not Valid','appdetail':appdetail})
         request.session['email']=email
@@ -515,7 +511,71 @@ def change(request):
         else:
             return render(request,'userpages/change_password.html',{'message2':'New password & Confirm password did not matched','appdetail':appdetail})
         
+
+
+
+
+def loginpage1(request):    
+    if request.session.get('role')=='user':
+        return redirect("../../dashboard")
+    elif request.session.get('role')=='admin':
+        return redirect("../../admin/dashboard")
+    else:
+        try:
+            appdetail=appsettings.objects.get(status='1')
+        except:
+            appdetail=None
+        if request.method=='POST': 
+           
+            addrs=request.POST.get('addrs')
+            ref_code=request.POST.get('ref_code')
+            print('ref_code',ref_code)
+            print('type',type(ref_code))
+            
+            
+            
+            try:
+                
+                user=User.objects.get(address=addrs)
+                request.session['email']=user.email
+                request.session['role']=user.role
+                payload_ = {'email': user.email, 'exp': datetime.utcnow() + timedelta(days=1)}
+
+                token = jwt.encode(payload=payload_,
+                                   key=KEYS
+                                   )
+                request.session['token']=token
+                return redirect('../../../dashboard')
+
+                
+            except:
+                
+                try:
+                    user=User.objects.get(referal_code=ref_code)
+                    
+                    user=User.objects.create(address=addrs,username='AL'+str(int(time.time()))+'P',email='AL'+str(int(time.time()))+'P@gmail.com',password=make_password(str(int(time.time()))),remember_token='0',status='1',verified_at='True',role='user',first_name='AL',last_name=str(int(time.time())),referal_by=ref_code)
+                    
+                except:
+                        
+              
+                    user=User.objects.create(address=addrs,username='AL'+str(int(time.time()))+'P',email='AL'+str(int(time.time()))+'P@gmail.com',password=make_password(str(int(time.time()))),remember_token='0',status='1',verified_at='True',role='user',first_name='AL',last_name=str(int(time.time())))
+                
+                request.session['email']=user.email
+                
+                request.session['role']=user.role
+                
+                
+                payload_ = {'email': user.email, 'exp': datetime.utcnow() + timedelta(days=1)}
+
+                token = jwt.encode(payload=payload_,
+                                   key=KEYS
+                                   )
+              
+                request.session['token']=token
         
+
+                return redirect('../../../dashboard')
+ 
 def loginpage(request):
 
 
@@ -540,7 +600,7 @@ def loginpage(request):
                 
             except:
                 return render(request,'userpages/login_2.html',{'message1':'Incorrect Email','appdetail':appdetail})
-            usr=authenticate(email=em,password=ps)
+            usr=authenticate(username=username,password=ps)
             print(usr)
             if usr is not None:
             
@@ -657,7 +717,7 @@ def myprofile(request):
                                                             'size':len(newsdata),
                                                             'appdetail':appdetail,
                                                             'last':alpdata,
-                                                            'u':request.session.get('email'),
+                                                            'u':usr.address,
                                                             'smart_contract':smart_contract}),
 
 
@@ -684,6 +744,7 @@ def walletview(request):
             alpdata=getdata().get('data').get('last')
         except:
             alpdata=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         if request.method=='POST':
             if 'withdraw' in request.POST:
@@ -737,7 +798,7 @@ def walletview(request):
                                                         'newsdata':newsdata,
                                                         'size':len(newsdata),
                                                         'appdetail':appdetail,
-                                                        'u':request.session.get('email'),
+                                                        'u':user_address,
                                                         'incomedata':incomedata,
                                                         'outcomedata':outcomedata,
                                                         'message':message,
@@ -764,6 +825,7 @@ def deposit(request):
             return redirect('../../../')
         message=None
         message1=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         try:
             alpdata=getdata().get('data').get('last')
         except:
@@ -784,7 +846,7 @@ def deposit(request):
                 currency=request.POST.get('currency')
                 amount=request.POST.get('amount')
                 return render(request,'userpages/depositsection.html',{'appdetail':appdetail,
-                                                                       'u':request.session.get('email'),
+                                                                       'u':user_address,
                                                                        'newsdata':newsdata,
                                                                        'walletdata':user_wallet,
                                                                        'message':message,
@@ -800,7 +862,7 @@ def deposit(request):
         incomedata=userWithdrawls.objects.filter(user_id=user_id.id,wallet_id=user_wallet.id,type='1')
         
         return render(request,'userpages/deposit.html',{'appdetail':appdetail,
-                                                    'u':request.session.get('email'),
+                                                    'u':user_address,
                                                     'newsdata':newsdata,
                                                     'walletdata':user_wallet,
                                                     'incomedata':incomedata,
@@ -827,6 +889,7 @@ def withdrawal(request):
             return redirect('../../../')
         message=None
         message1=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         try:
             alpdata=getdata().get('data').get('last')
         except:
@@ -948,7 +1011,7 @@ def withdrawal(request):
                                                            'last':alpdata,
                                                            'outcomedata':outcomedata,
                                                            'smart_contract':smart_contract
-                                                           ,'settings':setting})
+                                                           ,'settings':setting,'u':user_address})
     else:
         return redirect('../../../')
 
@@ -967,6 +1030,7 @@ def memberships(request,pk=None):
                 pass
             return redirect('../../../')
         message=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         try:
             alpdata=getdata().get('data').get('last')
         except:
@@ -989,7 +1053,7 @@ def memberships(request,pk=None):
         newsdata=newsmodel.objects.filter(datato__gt=currnet_date,status='True',date__lte=currnet_date)
         return render(request,'userpages/membership.html',{'data':obj,'message':message,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),
+                                                               'u':user_address,
                                                                'newsdata':newsdata,
                                                                'last':alpdata,
                                                                'size':len(newsdata),
@@ -1062,6 +1126,7 @@ def transactions(request):
             alpdata=getdata().get('data').get('last')
         except:
             alpdata=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         id=User.objects.get(email=request.session.get('email')).id
         usr=User.objects.get(id=id) 
         currnet_date=str(datetime.utcnow())[:10]
@@ -1089,7 +1154,7 @@ def transactions(request):
                                                                     'size':len(newsdata),
                                                                     'appdetail':appdetail,
                                                                     'last':alpdata,
-                                                                    'u':request.session.get('email'),'smart_contract':smart_contract})
+                                                                    'u':user_address,'smart_contract':smart_contract})
             except:
                 return render(request,'userpages/transactions.html',{'userid':id,
                                                                      'ref_link':ref_link,
@@ -1097,7 +1162,7 @@ def transactions(request):
                                                                         'size':len(newsdata),
                                                                         'appdetail':appdetail,
                                                                         'last':alpdata,
-                                                                        'u':request.session.get('email'),
+                                                                        'u':user_address,
                                                                         'smart_contract':smart_contract})
 
 def income(request):
@@ -1122,6 +1187,7 @@ def income(request):
             alpdata=getdata().get('data').get('last')
         except:
             alpdata=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         usr=User.objects.get(email=request.session.get('email')).id
         if usr.paid_members=='False':
@@ -1148,7 +1214,7 @@ def income(request):
                                                         'size':len(newsdata),
                                                         'appdetail':appdetail,
                                                         'last':alpdata,
-                                                        'u':request.session.get('email'),
+                                                        'u':user_address,
                                                         'smart_contract':smart_contract})
     else:
         return redirect("../../../")
@@ -1175,6 +1241,7 @@ def userprofile(request):
             alpdata=getdata().get('data').get('last')
         except:
             alpdata=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         User = get_user_model()
         user=User.objects.get(email=request.session.get('email'))
         smart_contract=WithdrawSettingModel.objects.get(id=1)
@@ -1203,7 +1270,7 @@ def userprofile(request):
                                                               'newsdata':newsdata,
                                                             'size':len(newsdata),'appdetail':appdetail,
                                                             'last':alpdata,
-                                                            'u':request.session.get('email'),
+                                                            'u':user_address,
                                                             'smart_contract':smart_contract})
     else:
         return redirect('../../../')
@@ -1271,6 +1338,7 @@ def plancontent(request):
             alpdata=getdata().get('data').get('last')
         except:
             alpdata=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         if user.verified_at=='True' and user.status=='1':
             if user.paid_members=='True':
@@ -1284,7 +1352,7 @@ def plancontent(request):
                                                             'size':len(newsdata),
                                                             'appdetail':appdetail,
                                                             'last':alpdata,
-                                                            'u':request.session.get('email'),
+                                                            'u':user_address,
                                                             'smart_contract':smart_contract})
     else:
         return render('../../../')
@@ -1307,6 +1375,7 @@ def allplans(request):
             except:
                 pass
             return redirect('../../../')
+        user_address=User.objects.get(email=request.session.get('email')).address
         user=User.objects.get(email=request.session.get('email'))
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         
@@ -1335,7 +1404,7 @@ def allplans(request):
                                                       'newsdata':newsdata,
                                                       'last':alpdata,
                                                             'size':len(newsdata),'appdetail':appdetail,
-                                                            'u':request.session.get('email'),
+                                                            'u':user_address,
                                                             'smart_contract':smart_contract})
     else:
         return render('../../../')
@@ -1355,6 +1424,7 @@ def userdata(request,pk=None):
                 pass
             return redirect('../../../')
         message1=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         try:
             appdetail=appsettings.objects.get(status='1')
@@ -1463,7 +1533,7 @@ def userdata(request,pk=None):
                                                                 'newsdata':newsdata,
                                                             'size':len(newsdata) ,
                                                             'appdetail':appdetail ,
-                                                            'u':request.session.get('email') ,
+                                                            'u':user_address ,
                                                             'useraddress':useraddress ,
                                                             'smart_contract':smart_contract                                                         
                                                                 })
@@ -1493,12 +1563,19 @@ def invite(refferal_code):
     path = Path("./config.env")
     load_dotenv(dotenv_path=path)
     SITE_URL = os.getenv('SITE_URL')
-    url=f'{SITE_URL}/register/'+refferal_code
+    url=f'{SITE_URL}'+'/ref_code/'+refferal_code
     return url
 
     
 
-def index(request):
+def index(request,pk=None):
+    if pk is not None:
+        ref_code=pk
+    else:
+        ref_code=None
+    print(ref_code)
+
+
     currnet_date=str(datetime.utcnow())[:10]
     smart_contract=WithdrawSettingModel.objects.get(id=1)
     data=newsmodel.objects.filter(datato__gte=currnet_date,status='True',date__lte=currnet_date)
@@ -1507,22 +1584,23 @@ def index(request):
     except:
         appdetail=None
     gallerydata=gallaryimages.objects.filter(status='1')
-    
+
     packages=membership.objects.filter(status='1')
-    
+
     if request.session.has_key('email') and request.session.has_key('role') and request.session.has_key('token'):
         reg=None
         dash=request.session.get('role')
     else:
-        reg=1 
+        reg=1
         dash=None
-    print('reg-->',reg)
+
     return render(request,'userpages/landing_official.html',{'data':data,'size':len(data),
                                                               'appdetail':appdetail,
                                                               'gallerydata':gallerydata,
                                                               'packages':packages,
                                                               'register':reg,
-                                                              'smart_contract':smart_contract,'dash':dash})
+                                                              'smart_contract':smart_contract,'dash':dash,'ref_code':ref_code})
+
 
 def support(request):
     if request.session.has_key('email')  and request.session.get('role') == 'user'  and request.session.has_key('token'):  
@@ -1546,6 +1624,7 @@ def support(request):
             alpdata=getdata().get('data').get('last')
         except:
             alpdata=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         user=User.objects.get(email=request.session.get('email'))
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         if user.verified_at=='True' and user.status=='1':
@@ -1570,7 +1649,7 @@ def support(request):
                                                             'size':len(newsdata),
                                                             'appdetail':appdetail,
                                                             'last':alpdata,
-                                                            'u':request.session.get('email'),
+                                                            'u':user_address,
                                                             'smart_contract':smart_contract})
 
 
@@ -1593,6 +1672,7 @@ def user_referal(request,pk=None):
             appdetail=appsettings.objects.get(status='1')
         except:
             appdetail=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         id=User.objects.get(email=request.session.get('email')).id
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         data=None
@@ -1632,7 +1712,7 @@ def user_referal(request,pk=None):
                                                             'size':len(newsdata),
                                                             'appdetail':appdetail,
                                                             'last':alpdata,
-                                                            'u':request.session.get('email'),
+                                                            'u':user_address,
                                                             'smart_contract':smart_contract})
         
     else:
@@ -1659,6 +1739,7 @@ def userpackage(request):
             alpdata=getdata().get('data').get('last')
         except:
             alpdata=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         appdetail=list(appsettings.objects.all())[-1]
         id=User.objects.get(email=request.session.get('email')).id  
         user=User.objects.get(email=request.session.get('email'))
@@ -1682,7 +1763,7 @@ def userpackage(request):
                                                             'size':len(newsdata),
                                                             'appdetail':appdetail,
                                                             'last':alpdata,
-                                                            'u':request.session.get('email'),
+                                                            'u':user_address,
                                                             'smart_contract':smart_contract})   
     else:
          return redirect('../../../')
@@ -1784,6 +1865,7 @@ def buyplan(request):
         message=None
         message1=None
         smart_contract=WithdrawSettingModel.objects.get(id=1)
+        user_address=User.objects.get(email=request.session.get('email')).address
         try:
             alpdata=getdata().get('data').get('last')
         except:
@@ -1813,7 +1895,7 @@ def buyplan(request):
                 message1='selected amount is incorrect'
                 return render(request,'userpages/membership.html',{'data':obj,'message1':message1,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),
+                                                               'u':user_address,
                                                                'newsdata':newsdata,
                                                                'last':alpdata,
                                                                'size':len(newsdata),
@@ -2096,10 +2178,12 @@ def buyplan(request):
 
                     try:
                         usr_ref=UserReferral.objects.get(parent_id=parent.id,child_id=user_id.id)
+                        usr_ref.refferal_income=float(usr_ref.refferal_income)+(float(amount)/100)*5
+                        usr_ref.save()
                         message='Package Bought Successfully'
                         return render(request,'userpages/membership.html',{'data':obj,'message':message,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),
+                                                               'u':user_address,
                                                            'smart_contract':smart_contract,
                                                                'newsdata':newsdata})
                     except:
@@ -2125,7 +2209,7 @@ def buyplan(request):
                     message='Package Bought Successfully'
                     return render(request,'userpages/membership.html',{'data':obj,'message':message,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),
+                                                               'u':user_address,
                                                                
                                                             'newsdata':newsdata,
                                                             'smart_contract':smart_contract})
@@ -2134,14 +2218,14 @@ def buyplan(request):
                     message='Package Bought Successfully'
                     return render(request,'userpages/membership.html',{'data':obj,'message':message,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),
+                                                               'u':user_address,
                                                           
                                                                'newsdata':newsdata})
             else:
                 message='Package Bought Successfully'
                 return render(request,'userpages/membership.html',{'data':obj,'message':message,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),
+                                                               'u':user_address,
                                                               
                                                                'newsdata':newsdata,
                                                                'smart_contract':smart_contract})      
@@ -2193,6 +2277,7 @@ def ptransfer(request):
             except:
                 pass
             return redirect('../../../')
+        user_address=User.objects.get(email=request.session.get('email')).address
         currnet_date=str(datetime.utcnow())[:10]
         smart_contract=WithdrawSettingModel.objects.get(id=1)
 
@@ -2230,7 +2315,7 @@ def ptransfer(request):
             else:
                 message1='Not Sufficient Balance'
 
-        return render(request,'userpages/ptransfer.html',{'u':request.session.get('email'),
+        return render(request,'userpages/ptransfer.html',{'u':user_address,
                                                       'appdetail':appdetail,
                                                       'newsdata':newsdata,
                                                       'size':len(newsdata),
@@ -2260,6 +2345,7 @@ def wallettransfer(request):
         message1=None
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         currnet_date=str(datetime.utcnow())[:10]
+        user_address=User.objects.get(email=request.session.get('email')).address
         try:
             alpdata=getdata().get('data').get('last')
         except:
@@ -2287,7 +2373,7 @@ def wallettransfer(request):
                     message1='User Not Found'
                     data=Ptransfer.objects.filter(user_id=user_id.id)
                     return render(request,'userpages/wallettransfer.html',{
-                                                      'u':request.session.get('email'),
+                                                      'u':user_address,
                                                       'appdetail':appdetail,
                                                       'newsdata':newsdata,
                                                       'size':len(newsdata),
@@ -2439,7 +2525,7 @@ def wallettransfer(request):
                     message1='Not Sufficient Balance'
         data=Ptransfer.objects.filter(user_id=user_id.id)
         return render(request,'userpages/wallettransfer.html',{
-                                                      'u':request.session.get('email'),
+                                                      'u':user_address,
                                                       'appdetail':appdetail,
                                                       'newsdata':newsdata,
                                                       'size':len(newsdata),
@@ -2473,6 +2559,7 @@ def transferhistory(request):
             return redirect('../../../')
         currnet_date=str(datetime.utcnow())[:10]
         smart_contract=WithdrawSettingModel.objects.get(id=1)
+        user_address=User.objects.get(email=request.session.get('email')).address
         try:
             alpdata=getdata().get('data').get('last')
         except:
@@ -2490,7 +2577,7 @@ def transferhistory(request):
         data=Ptransfer.objects.filter(user_id=user_id.id)
         
 
-        return render(request,'userpages/transferhistory.html',{'u':request.session.get('email'),
+        return render(request,'userpages/transferhistory.html',{'u':user_address,
                                                       'appdetail':appdetail,
                                                       'newsdata':newsdata,
                                                       'size':len(newsdata),
@@ -2521,6 +2608,7 @@ def roi_history(request,pk=None):
             return redirect('../../../')
         currnet_date=str(datetime.utcnow())[:10]
         smart_contract=WithdrawSettingModel.objects.get(id=1)
+        user_address=User.objects.get(email=request.session.get('email')).address
         try:
             alpdata=getdata().get('data').get('last')
         except:
@@ -2539,7 +2627,7 @@ def roi_history(request,pk=None):
            
                 
         data=FarmingRoiLogs.objects.filter(user_id=user_id.id)
-        return render(request,'userpages/roi_history.html',{'u':request.session.get('email'),
+        return render(request,'userpages/roi_history.html',{'u':user_address,
                                                       'appdetail':appdetail,
                                                       'newsdata':newsdata,
                                                       'size':len(newsdata),
@@ -2574,6 +2662,7 @@ def principal_history(request,pk=None):
             except:
                 pass
             return redirect('../../../')
+        user_address=User.objects.get(email=request.session.get('email')).address
         currnet_date=str(datetime.utcnow())[:10]
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         try:
@@ -2594,7 +2683,7 @@ def principal_history(request,pk=None):
            
         plans_=[i.id for i in UserMembership.objects.filter(user_id=user_id.id)]
         data=Principallogs.objects.filter(plan_id__in=plans_)
-        return render(request,'userpages/principal_history.html',{'u':request.session.get('email'),
+        return render(request,'userpages/principal_history.html',{'u':user_address,
                                                       'appdetail':appdetail,
                                                       'newsdata':newsdata,
                                                       'size':len(newsdata),
@@ -2628,6 +2717,7 @@ def level_income(request):
             except:
                 pass
             return redirect('../../../')
+        user_address=User.objects.get(email=request.session.get('email')).address
         currnet_date=str(datetime.utcnow())[:10]
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         try:
@@ -2646,7 +2736,7 @@ def level_income(request):
         user_id=User.objects.get(email=request.session.get('email'))
         data=levelincome.objects.filter(parent_id=user_id)
         overalllevelincome=sum([float(i.level_income) for i in data])
-        return render(request,'userpages/level_income.html',{'u':request.session.get('email'),
+        return render(request,'userpages/level_income.html',{'u':user_address,
                                                       'appdetail':appdetail,
                                                       'newsdata':newsdata,
                                                       'size':len(newsdata),
@@ -2683,6 +2773,7 @@ def current_farming(request):
                 pass
             return redirect('../../../')
         message=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         try:
             appdetail=appsettings.objects.get(status='1')
         except:
@@ -2703,7 +2794,7 @@ def current_farming(request):
         newsdata=newsmodel.objects.filter(datato__gt=currnet_date,status='True',date__lte=currnet_date)
         return render(request,'userpages/current_plan.html',{'data':data,'message':message,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),
+                                                               'u':user_address,
                                                                'plan_name':'Farming Package','newsdata':newsdata,
                                                                'last':alpdata,
                                                                'size':len(newsdata),'smart_contract':smart_contract})
@@ -2726,6 +2817,7 @@ def current_staking(request):
             return redirect('../../../')
         message=None
         smart_contract=WithdrawSettingModel.objects.get(id=1)
+        user_address=User.objects.get(email=request.session.get('email')).address
         try:
             appdetail=appsettings.objects.get(status='1')
         except:
@@ -2744,7 +2836,7 @@ def current_staking(request):
         newsdata=newsmodel.objects.filter(datato__gt=currnet_date,status='True',date__lte=currnet_date)
         return render(request,'userpages/current_plan.html',{'data':data,'message':message,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),
+                                                               'u':user_address,
                                                                'plan_name':'Staking','newsdata':newsdata,
                                                                'last':alpdata,
                                                                'size':len(newsdata),'smart_contract':smart_contract})
@@ -2991,6 +3083,7 @@ def rankreward(request):
             return redirect('../../../')
         message=None
         smart_contract=WithdrawSettingModel.objects.get(id=1)
+        user_address=User.objects.get(email=request.session.get('email')).address
         try:
             appdetail=appsettings.objects.get(status='1')
         except:
@@ -3020,7 +3113,7 @@ def rankreward(request):
         print(r)
         return render(request,'userpages/rankandrewards.html',{'message':message,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),
+                                                               'u':user_address,
                                                                'plan_name':'Farming Package','newsdata':newsdata,
                                                                'size':len(newsdata),
                                                                'userrank':r,
@@ -3044,6 +3137,7 @@ def rewards(request):
                 pass
             return redirect('../../../')
         message=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         try:
             appdetail=appsettings.objects.get(status='1')
@@ -3074,7 +3168,7 @@ def rewards(request):
     
         return render(request,'userpages/rewards.html',{'message':message,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),
+                                                               'u':user_address,
                                                                'plan_name':'Farming Package','newsdata':newsdata,
                                                                'size':len(newsdata),
                                                                'userrank':r,
@@ -3097,6 +3191,7 @@ def direct_income(request):
                 pass
             return redirect('../../../')
         message=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         try:
             appdetail=appsettings.objects.get(status='1')
@@ -3118,7 +3213,7 @@ def direct_income(request):
         total_income=sum([float(i.refferal_income) for i in data])
         return render(request,'userpages/directincome.html',{'message':message,'total_income':total_income,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),'size':len(newsdata),'data':data,'last':alpdata,'smart_contract':smart_contract})
+                                                               'u':user_address,'size':len(newsdata),'data':data,'last':alpdata,'smart_contract':smart_contract})
     else:
         return redirect('../../../')
 
@@ -3137,6 +3232,7 @@ def depostihistory(request):
                 pass
             return redirect('../../../')
         message=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         try:
             appdetail=appsettings.objects.get(status='1')
@@ -3158,7 +3254,7 @@ def depostihistory(request):
         incomedata=userWithdrawls.objects.filter(wallet_id=userwallet.id,type='1')
         return render(request,'userpages/deposithistory.html',{'message':message,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),'size':len(newsdata),'newsdata':newsdata,
+                                                               'u':user_address,'size':len(newsdata),'newsdata':newsdata,
                                                                'data':incomedata,
                                                                'last':alpdata,'smart_contract':smart_contract})
     else:
@@ -3179,6 +3275,7 @@ def withdrawalihistory(request):
                 pass
             return redirect('../../../')
         message=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         try:
             appdetail=appsettings.objects.get(status='1')
@@ -3201,7 +3298,7 @@ def withdrawalihistory(request):
                                                              'data':outcomedata,
                                                              'newsdata':newsdata,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),'size':len(newsdata),
+                                                               'u':user_address,'size':len(newsdata),
                                                                'last':alpdata,'smart_contract':smart_contract})
     else:
         return redirect('../../../')
@@ -3222,6 +3319,7 @@ def topuphistory(request):
                 pass
             return redirect('../../../')
         message=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         try:
             appdetail=appsettings.objects.get(status='1')
@@ -3244,7 +3342,7 @@ def topuphistory(request):
                                                              'data':data,
                                                              'newsdata':newsdata,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),'size':len(newsdata),
+                                                               'u':user_address,'size':len(newsdata),
                                                                'last':alpdata,'smart_contract':smart_contract})
     else:
         return redirect('../../../')
@@ -3267,6 +3365,7 @@ def tree(request):
                 pass
             return redirect('../../../')
         message=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         try:
             appdetail=appsettings.objects.get(status='1')
@@ -3294,7 +3393,7 @@ def tree(request):
                                                              'user':usr,
                                                              'newsdata':newsdata,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),'size':len(newsdata),
+                                                               'u':user_address,'size':len(newsdata),
                                                                'last':alpdata,'smart_contract':smart_contract,
                                                                'usr_ref_income':usr_ref_income})
     else:
@@ -3316,6 +3415,7 @@ def downlineteam(request):
             return redirect('../../../')
         message=None
         data=None
+        user_address=User.objects.get(email=request.session.get('email')).address
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         try:
             appdetail=appsettings.objects.get(status='1')
@@ -3382,7 +3482,7 @@ def downlineteam(request):
                                                              'data':data,
                                                              'newsdata':newsdata,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),'size':len(newsdata),
+                                                               'u':user_address,'size':len(newsdata),
                                                                'last':alpdata,'smart_contract':smart_contract
                                                                })
     else:
@@ -3496,6 +3596,7 @@ def royality_income(request):
             except:
                 pass
             return redirect('../../../')
+        user_address=User.objects.get(email=request.session.get('email')).address
         message=None
         smart_contract=WithdrawSettingModel.objects.get(id=1)
         try:
@@ -3519,7 +3620,7 @@ def royality_income(request):
                                                              'data':data,
                                                              'newsdata':newsdata,
                                                                'ref_link':ref_link,'appdetail':appdetail,
-                                                               'u':request.session.get('email'),'size':len(newsdata),
+                                                               'u':user_address,'size':len(newsdata),
                                                                'last':alpdata,'smart_contract':smart_contract})
     else:
         return redirect('../../../')

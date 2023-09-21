@@ -54,7 +54,7 @@ def home(request,pk=None):
         pending_deposit=userWithdrawls.objects.filter(status='0',type='1')
         pending_withdrawls=userWithdrawls.objects.filter(status='0',type='0')
         
-        usr_refs=[]
+        
         data={'total_users':len(User.objects.exclude(role='admin').all()),'total_verified_users':len(User.objects.exclude(role='admin').filter(verified_at='True',paid_members='True')),
               'total_unverified_users':len(User.objects.exclude(role='admin').filter(verified_at='True',paid_members='False')),
               'total_active_users':len(User.objects.exclude(role='admin').filter(status='1',verified_at='True')),

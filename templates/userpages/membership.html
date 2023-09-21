@@ -4,26 +4,22 @@
 <div class="main-content">
   <div class="page-content">
     <div class="container-fluid">
-      
 
+      <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-5">
+        <h4 class="mb-sm-0 ">Membership Plansd</h4>
+
+
+      </div>
+      <p class="card-title-desc pb-2 planname1">
+        Buy any plan to become a verified member.
+      </p>
       <div class="row mt-4 pb-5 mb-5">
         <div class="col-12">
-          <div
-            class="card bg-dark bg-opacity-25 border border-white shadow-lg border-opacity-25 rounded-4"
-          >
-            <div class="card-header rounded-4">
-              <h4 class="card-title">Membership Plans</h4>
-              <p class="card-title-desc pb-2 planname1">
-                Buy any plan to become a verified member.
-              </p>
-          
-            </div>
-            <div class="card-body">
+          <div class="card bg-dark bg-opacity-25 border border-white shadow-lg border-opacity-25 rounded-4 ">
+
+            <div class="card-body bg-dark rounded-4">
               <div class="table-responsive">
-                <table
-                  id="test"
-                  class="table hover table-borderless dt-responsive nowrap w-100 text-nowrap mt-3"
-                >
+                <table id="test" class="table hover table-borderless dt-responsive nowrap w-100 text-nowrap mt-3">
                   <thead>
                     <tr>
                       <th scope="col">
@@ -50,12 +46,16 @@
                           Plan Period
                         </p>
                       </th>
-                    
-                      <th scope='col'><p class="text-white text-opacity-75 mb-0">Principal Amount(%)</p></th>
-                    <th scope='col'><p class="text-white text-opacity-75 mb-0">Principal Amount per month(%)</p></th>
-                    <th scope="col">
-                      <p class="text-white text-opacity-75 mb-0">Action</p>
-                    </th>
+
+                      <th scope='col'>
+                        <p class="text-white text-opacity-75 mb-0">Principal Amount(%)</p>
+                      </th>
+                      <th scope='col'>
+                        <p class="text-white text-opacity-75 mb-0">Principal Amount per month(%)</p>
+                      </th>
+                      <th scope="col">
+                        <p class="text-white text-opacity-75 mb-0">Action</p>
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -71,95 +71,56 @@
                       <td class='text-white'>{{i.roi}} %</td>
                       <td class='text-white'>{{i.plan_period}} months</td>
                       <td>{{i.principal_amount}}%</td>
-                    <td>{{i.principal_amount_per_month}}%</td>
+                      <td>{{i.principal_amount_per_month}}%</td>
 
                       <td>
-                        <button
-                          type="button"
-                          class="btn btn-success waves-effect waves-light"
-                          data-bs-toggle="modal"
-                          data-bs-target="#firstmodal{{i.id}}"
-                        >
+                        <button type="button" class="btn btn-success waves-effect waves-light" data-bs-toggle="modal"
+                          data-bs-target="#firstmodal{{i.id}}">
                           BUY
                         </button>
                         <!-- First modal dialog -->
-                        <div
-                          class="modal fade"
-                          id="firstmodal{{i.id}}"
-                          aria-hidden="true"
-                          aria-labelledby="exampleModalToggleLabel"
-                          tabindex="-1"
-                        >
+                        <div class="modal fade" id="firstmodal{{i.id}}" aria-hidden="true"
+                          aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                           <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                               <div class="modal-header">
-                                <h5
-                                  class="modal-title planname1"
-                                  id="exampleModalToggleLabel"
-                                >
+                                <h5 class="modal-title planname1" id="exampleModalToggleLabel">
                                   Buy This Plan
                                 </h5>
-                                <button
-                                  type="button"
-                                  class="btn-close"
-                                  data-bs-dismiss="modal"
-                                  aria-label="Close"
-                                ></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                  aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
                                 <form action="../../../buyplan" method="post">
                                   {% csrf_token %}
 
-                                  <input
-                                    type="text"
-                                    name="id"
-                                    hidden
-                                    value="{{i.id}}"
-                                  />
+                                  <input type="text" name="id" hidden value="{{i.id}}" />
                                   <div class="mb-3">
-                                    <label
-                                      class="font-size-13"
-                                      for="formrow-firstname-input"
-                                      >Enter Coins </label
-                                    >
-                                   
-                                    <input
-                                      type="number"
-                                      class="form-control"
-                                      id="formrow-firstname-input{{i.id}}"
-                                      placeholder=" {{i.min_amount}}  -  {{i.max_amount}} coins"
-                                      name="amount" required
-                                    />
-                         
+                                    <label class="font-size-13" for="formrow-firstname-input">Enter Coins </label>
+
+                                    <input type="number" class="form-control" id="formrow-firstname-input{{i.id}}"
+                                      placeholder=" {{i.min_amount}}  -  {{i.max_amount}} coins" name="amount"
+                                      required />
+
                                   </div>
 
 
                                   <div class="mb-3">
-                                  
-                                   
-                                    <input
-                                      type="text"
-                                      class="form-control usdt"
-                                    id="usdt{{i.id}}"
-                                        placeholder='0 USDT'                               
-                                      name="price" required
-                                      readonly
-                                    />
-                         
+
+
+                                    <input type="text" class="form-control usdt" id="usdt{{i.id}}" placeholder='0 USDT'
+                                      name="price" required readonly />
+
                                   </div>
 
-                               
+
 
                                   <div class="mt-4">
-                                    <button
-                                      type="submit"
-                                      class="btn btn-success w-md"
-                                      name="buyplan"
-                                    >
+                                    <button type="submit" class="btn btn-success w-md" name="buyplan">
                                       BUY
                                     </button>
                                   </div>
-                           
+
 
 
                                 </form>
@@ -174,34 +135,35 @@
                     <script>
 
 
-                      $( "#formrow-firstname-input{{i.id}}" ).on( "keyup", function(e) {
-                     
-                        let coins=e.target.value;
-                        
-                      
+                      $("#formrow-firstname-input{{i.id}}").on("keyup", function (e) {
+
+                        let coins = e.target.value;
+
+
                         $.ajax({
                           type: "GET",
                           url: "../../../get_price/" + `${coins}`,
                           success: function (data) {
-                           
+
                             if (data.status == '1') {
-                              
-                              document.querySelector("#usdt{{i.id}}").value=data.data+' USDT';
-                            console.log(data)
-                            }}
-                    
-                           
-                          });
-                          return false;
+
+                              document.querySelector("#usdt{{i.id}}").value = data.data + ' USDT';
+                              console.log(data)
+                            }
+                          }
+
+
                         });
-                    
-                      
-                    
-                    
-                    
-                    
+                        return false;
+                      });
+
+
+
+
+
+
                     </script>
-                    
+
                     {% endfor %}
                   </tbody>
                 </table>

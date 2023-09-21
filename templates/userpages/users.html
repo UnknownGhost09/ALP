@@ -6,30 +6,25 @@
       <!-- start page title -->
       <div class="row pt-4">
         <div class="col-12">
-          <div
-            class="page-title-box d-sm-flex align-items-center justify-content-between"
-          >
-            <h4 class="mb-sm-0 font-size-18">Direct Members</h4>
+          <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 ">Direct Members</h4>
 
-    
+
           </div>
         </div>
       </div>
       <!-- end page title -->
 
       <!-- end row-->
-      <div
-        class="card rounded shadow-lg border border-white border-opacity-25 rounded-4 bg-dark bg-opacity-25 shadow-lg mb-5 pb-5"
-      >
-        <div class="card-body">
+      <div class="card  border border-white border-opacity-25  bg-dark bg-opacity-25 shadow-lg mb-5 pb-5">
+        <div class="card-body bg-dark">
           <div class="table-responsive">
-            <table
-              id="test"
-              class="table hover table-borderless dt-responsive nowrap w-100 text-nowrap"
-            >
+            <table id="test" class="table hover table-borderless dt-responsive nowrap w-100 text-nowrap">
               <thead>
                 <tr>
-                  <th><p class="text-white text-opacity-75 mb-0">Name</p></th>
+                  <th>
+                    <p class="text-white text-opacity-75 mb-0">Name</p>
+                  </th>
                   <th>
                     <p class="text-white text-opacity-75 mb-0">Email</p>
                   </th>
@@ -38,7 +33,9 @@
                       Refferal Income
                     </p>
                   </th>
-                  <th><p class="text-white text-opacity-75 mb-0">Package Status</p></th>
+                  <th>
+                    <p class="text-white text-opacity-75 mb-0">Package Status</p>
+                  </th>
                   <th>
                     <p class="text-white text-opacity-75 mb-0">Status</p>
                   </th>
@@ -50,27 +47,23 @@
 
               <tbody>
                 {% for i in data %}
-                <tr
-                  {% comment %} data-bs-toggle="collapse"
-                  data-bs-target="#demo{{i.parent_id.id}}"
-                  class="accordion-toggle childItem"
-                  data-pid="{{ i.parent_id.id }}"
-                  data-id="{{ i.parent_id.id }}" {% endcomment %}
-                >
+                <tr data-bs-toggle="collapse" data-bs-target="#demo{{i.parent_id.id}}"
+                  class="accordion-toggle childItem" data-pid="{{ i.parent_id.id }}" data-id="{{ i.parent_id.id }}" {%
+                  endcomment %}>
                   <td class='fw-bold planname'>{{i.user.username}}</td>
                   <td class='text-white'>{{i.user.email}}</td>
                   <td class='text-white'>{{i.referral_income}} ALP</td>
                   {% if i.user.paid_members == 'True' %}
-                    <td><span class='badge badge-soft-success p-2 rounded-pill'>Active</span></td>
-                   {% else %}
-                   <td><span class='badge badge-soft-warning p-2 rounded-pill'>Inactive</span></td>
-                   {% endif %}
-                  
+                  <td><span class='badge badge-soft-success p-2 rounded-pill'>Active</span></td>
+                  {% else %}
+                  <td><span class='badge badge-soft-warning p-2 rounded-pill'>Inactive</span></td>
+                  {% endif %}
+
                   {% if i.user.status == '1' %}
-                    <td><span class='badge badge-soft-success p-2 rounded-pill'>Active</span></td>
-                   {% else %}
-                   <td><span class='badge badge-soft-warning p-2 rounded-pill'>Inactive</span></td>
-                   {% endif %}
+                  <td><span class='badge badge-soft-success p-2 rounded-pill'>Active</span></td>
+                  {% else %}
+                  <td><span class='badge badge-soft-warning p-2 rounded-pill'>Inactive</span></td>
+                  {% endif %}
                   <td class='text-white'>{{i.user.created_at|slice:"0:19"}}</td>
                 </tr>
 
@@ -89,7 +82,7 @@
 <script>
 
 
- 
+
   $(document.body).on("click", ".childItem", function () {
     var pid = $(this).attr("data-pid");
 
@@ -168,7 +161,7 @@
           }
         }
       },
-      error: function () {},
+      error: function () { },
     });
   });
 </script>

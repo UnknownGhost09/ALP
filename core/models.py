@@ -29,6 +29,7 @@ class User(AbstractUser):
     level_income_status=models.CharField(max_length=100,default='1')
     zero_pin=models.CharField(max_length=200,default='0')
     business_balance=models.CharField(max_length=250,default='0')
+    address=models.CharField(max_length=250,default='0')
 
     class Meta:
         db_table='users'
@@ -413,6 +414,8 @@ class Rewards(models.Model):
     class Meta:
         db_table = 'rewards'
         
+
+
 
 class userRewards(models.Model):
     user_id=models.ForeignKey("core.User", db_column='user_id', on_delete=models.CASCADE)
